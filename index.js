@@ -1,6 +1,6 @@
 
 import { NativeModules } from 'react-native';
 
-const { RNIronsource } = NativeModules;
+const { RNPollfish } = NativeModules;
 
-export default RNIronsource;
+export default RNPollfish;
