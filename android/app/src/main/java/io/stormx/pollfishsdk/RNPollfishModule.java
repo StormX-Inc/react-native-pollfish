@@ -18,9 +18,10 @@ public class RNPollfishModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void startOfferwall() {
+    public void startOfferwall(String appKey) {
         ReactApplicationContext context = getReactApplicationContext();
         Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra(MainActivity.appKey, appKey);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }

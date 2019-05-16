@@ -10,6 +10,8 @@ import com.pollfish.main.PollFish.ParamsBuilder;
 
 public class MainActivity extends AppCompatActivity implements PollfishOpenedListener, PollfishClosedListener {
 
+    public static final String appKey = "appkey";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements PollfishOpenedLis
     @Override
     public void onResume() {
         super.onResume();
-        PollFish.initWith(this, new ParamsBuilder("2ad6e857-2995-4668-ab95-39e068faa558").build());
+        PollFish.initWith(this, new ParamsBuilder(getIntent().getStringExtra(appKey)).build());
     }
 
     @Override
