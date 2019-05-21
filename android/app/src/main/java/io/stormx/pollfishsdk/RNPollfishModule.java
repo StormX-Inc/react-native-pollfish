@@ -25,7 +25,7 @@ public class RNPollfishModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void startOfferwall(final String appKey, final String userId) {
+    public void startOfferwall(final String appKey, final String userId, final isProd) {
         sendEvent("onPollfishStarted");
 
         getCurrentActivity().runOnUiThread(new Runnable() {
@@ -39,6 +39,7 @@ public class RNPollfishModule extends ReactContextBaseJavaModule {
                             sendEvent("onPollfishClosed");
                         }
                     })
+                    .releaseMode(isProd)
                     .requestUUID(userId)
                     .build());
             }
