@@ -39,7 +39,7 @@ public class RNPollfishModule extends ReactContextBaseJavaModule {
                             sendEvent("onPollfishClosed");
                         }
                     })
-                    .offerwallMode(true)
+                    .offerWallMode(true)
                     .rewardMode(true)
                     .releaseMode(isProd)
                     .requestUUID(userId)
