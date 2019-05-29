@@ -1,6 +1,6 @@
 package io.stormx.pollfishsdk;
 
-import android.content.Intent;
+import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
@@ -9,9 +9,14 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
+import com.pollfish.classes.SurveyInfo;
 import com.pollfish.main.PollFish;
 import com.pollfish.main.PollFish.ParamsBuilder;
 import com.pollfish.interfaces.PollfishClosedListener;
+import com.pollfish.interfaces.PollfishSurveyNotAvailableListener;
+import com.pollfish.interfaces.PollfishReceivedSurveyListener;
+
+import javax.annotation.Nullable;
 
 public class RNPollfishModule extends ReactContextBaseJavaModule {
 
@@ -25,25 +30,49 @@ public class RNPollfishModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void startOfferwall(final String appKey, final String userId, final boolean isProd) {
+    public void init(final String appKey, final String userId, final boolean isProd) {
         sendEvent("onPollfishStarted");
 
         getCurrentActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 PollFish.initWith(getCurrentActivity(), new ParamsBuilder(appKey)
-                    .pollfishClosedListener(new PollfishClosedListener() {
-                        @Override
-                        public void onPollfishClosed() {
-                            PollFish.hide();
-                            sendEvent("onPollfishClosed");
-                        }
-                    })
-                    .offerWallMode(true)
-                    .rewardMode(true)
-                    .releaseMode(isProd)
-                    .requestUUID(userId)
-                    .build());
+                        .pollfishClosedListener(new PollfishClosedListener() {
+                            @Override
+                            public void onPollfishClosed() {
+                                PollFish.hide();
+                                Log.d("PollFish", "onPollfishClosed");
+                                sendEvent("onPollfishClosed");
+                            }
+                        })
+                        .pollfishReceivedSurveyListener(new PollfishReceivedSurveyListener() {
+                            @Override
+                            public void onPollfishSurveyReceived(@Nullable SurveyInfo surveyInfo) {
+                                Log.d("PollFish", "onPollfishSurveyReceived");
+                            }
+                        })
+                        .pollfishSurveyNotAvailableListener(new PollfishSurveyNotAvailableListener() {
+                            @Override
+                            public void onPollfishSurveyNotAvailable(){
+                                Log.d("PollFish", "onPollfishSurveyNotAvailable");
+                                sendEvent("onPollfishClosed");
+                            }
+                        })
+                        .offerWallMode(true)
+                        .rewardMode(true)
+                        .releaseMode(isProd)
+                        .requestUUID(userId)
+                        .build());
+            }
+        });
+    }
+
+    @ReactMethod
+    public void startOfferwall() {
+        getCurrentActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                PollFish.show();
             }
         });
     }
