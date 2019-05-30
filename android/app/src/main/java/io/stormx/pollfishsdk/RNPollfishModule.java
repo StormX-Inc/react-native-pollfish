@@ -49,6 +49,7 @@ public class RNPollfishModule extends ReactContextBaseJavaModule {
                             @Override
                             public void onPollfishSurveyReceived(@Nullable SurveyInfo surveyInfo) {
                                 Log.d("PollFish", "onPollfishSurveyReceived");
+                                sendEvent("onPollfishClosed");
                             }
                         })
                         .pollfishSurveyNotAvailableListener(new PollfishSurveyNotAvailableListener() {
