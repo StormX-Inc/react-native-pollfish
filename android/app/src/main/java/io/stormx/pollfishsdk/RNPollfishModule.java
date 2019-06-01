@@ -56,7 +56,7 @@ public class RNPollfishModule extends ReactContextBaseJavaModule {
                             @Override
                             public void onPollfishSurveyNotAvailable(){
                                 Log.d("PollFish", "onPollfishSurveyNotAvailable");
-                                sendEvent("onPollfishClosed");
+                                sendEvent("onPollfishFailed");
                             }
                         })
                         .offerWallMode(true)
