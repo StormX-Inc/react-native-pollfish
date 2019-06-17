@@ -33,49 +33,53 @@ public class RNPollfishModule extends ReactContextBaseJavaModule {
     public void init(final String appKey, final String userId, final boolean isProd) {
         sendEvent("onPollfishStarted");
 
-        getCurrentActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                PollFish.initWith(getCurrentActivity(), new ParamsBuilder(appKey)
-                        .pollfishClosedListener(new PollfishClosedListener() {
-                            @Override
-                            public void onPollfishClosed() {
-                                PollFish.hide();
-                                Log.d("PollFish", "onPollfishClosed");
-                                sendEvent("onPollfishClosed");
-                            }
-                        })
-                        .pollfishReceivedSurveyListener(new PollfishReceivedSurveyListener() {
-                            @Override
-                            public void onPollfishSurveyReceived(@Nullable SurveyInfo surveyInfo) {
-                                Log.d("PollFish", "onPollfishSurveyReceived");
-                                sendEvent("onPollfishClosed");
-                            }
-                        })
-                        .pollfishSurveyNotAvailableListener(new PollfishSurveyNotAvailableListener() {
-                            @Override
-                            public void onPollfishSurveyNotAvailable(){
-                                Log.d("PollFish", "onPollfishSurveyNotAvailable");
-                                sendEvent("onPollfishFailed");
-                            }
-                        })
-                        .offerWallMode(true)
-                        .rewardMode(true)
-                        .releaseMode(isProd)
-                        .requestUUID(userId)
-                        .build());
-            }
-        });
+        if (getCurrentActivity() != null) {
+            getCurrentActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    PollFish.initWith(getCurrentActivity(), new ParamsBuilder(appKey)
+                            .pollfishClosedListener(new PollfishClosedListener() {
+                                @Override
+                                public void onPollfishClosed() {
+                                    PollFish.hide();
+                                    Log.d("PollFish", "onPollfishClosed");
+                                    sendEvent("onPollfishClosed");
+                                }
+                            })
+                            .pollfishReceivedSurveyListener(new PollfishReceivedSurveyListener() {
+                                @Override
+                                public void onPollfishSurveyReceived(@Nullable SurveyInfo surveyInfo) {
+                                    Log.d("PollFish", "onPollfishSurveyReceived");
+                                    sendEvent("onPollfishClosed");
+                                }
+                            })
+                            .pollfishSurveyNotAvailableListener(new PollfishSurveyNotAvailableListener() {
+                                @Override
+                                public void onPollfishSurveyNotAvailable(){
+                                    Log.d("PollFish", "onPollfishSurveyNotAvailable");
+                                    sendEvent("onPollfishFailed");
+                                }
+                            })
+                            .offerWallMode(true)
+                            .rewardMode(true)
+                            .releaseMode(isProd)
+                            .requestUUID(userId)
+                            .build());
+                }
+            });
+        }
     }
 
     @ReactMethod
     public void startOfferwall() {
-        getCurrentActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                PollFish.show();
-            }
-        });
+        if (getCurrentActivity() != null) {
+            getCurrentActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    PollFish.show();
+                }
+            });
+        }
     }
 
     private void sendEvent(String eventValue) {
